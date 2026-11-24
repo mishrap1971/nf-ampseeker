@@ -18,7 +18,7 @@ Run straight from GitHub:
 nextflow run mishrap1971/nf-ampseeker -r main -profile docker [parameters]
 ```
 
-or from a local copy:
+or from a local git clone:
 
 ```bash
 git clone https://github.com/mishrap1971/nf-ampseeker.git
@@ -36,11 +36,15 @@ parameter:
 nextflow run . -profile docker -params-file my_params.yaml
 ```
 
-YAML is the safer choice for lists and true/false values.
-
 To continue a stopped or failed run without redoing finished steps, run the same command
 again with `-resume` added. The `work/` folder holds intermediate files. Delete it once you
 no longer need to resume.
+
+To save disk space, delete all older runs except the last by
+```bash
+nextflow clean -but last -f
+```
+
 
 ## Sample metadata
 
@@ -49,23 +53,23 @@ no longer need to resume.
 | Column | Needed | Notes |
 |---|---|---|
 | `sample_id` | always | Unique. Used in every output file name. |
-| `fq1` | always for nanopore | Path to the FASTQ (Illumina: read 1). |
+| `fq1` | mandatory for nanopore | Path to the FASTQ (in case of Illumina, read 1). |
 | `fq2` | Illumina | Path to read 2. |
 | cohort columns | always | Default `location`, `taxon`, `country`. Used to group and colour samples in the analyses. Change them with `--cohort_columns`. |
 | `latitude`, `longitude` | only with `--analysis_sample_map true` | |
 | `plate`, `well_letter`, `well_number` | optional | When all three are present, the reads-per-well plot is added. |
 
-Illumina only: if `fq1`/`fq2` are left out, reads are looked up as
+Illumina only: if `fq1`/`fq2` are left out, reads are located as
 `<reads_dir>/<sample_id>_1.fastq.gz` and `_2.fastq.gz`.
 
-To use other cohort columns, list them, comma-separated:
+To use other cohort columns, list them in comma-separated argument:
 
 ```bash
 --cohort_columns cohort,site
 ```
 
-To supply your own plot colours, pass a JSON file with `--metadata_colours`. Otherwise
-colours are generated from the cohort columns.
+To supply your own plot colours, pass a JSON file with `--metadata_colours`. The pipeline generates
+plot colours from the cohort columns.
 
 ## Reference files
 
@@ -83,7 +87,7 @@ message if they are not.
 
 ## Nanopore: Clair3 models
 
-Nanopore amplicon calls use Clair3 2.0, which needs a **PyTorch** model: a folder holding
+Nanopore amplicon calls use Clair3 2.0, which needs a PyTorch model: a folder holding
 `pileup.pt` and `full_alignment.pt`. Older TensorFlow models (`pileup.index`,
 `pileup.data-*`), including those fetched by the Snakemake AmpSeeker download script, do
 not work and fail with a `FileNotFoundError` for `pileup.pt`.
@@ -105,12 +109,12 @@ done
 Then pass `--clair3_model_path clair3_models/r1041_e82_400bps_sup_v420`.
 
 Clair3 writes a gVCF per sample. Genotypes with read depth below `--min_genotype_depth`
-(default 10) are set to missing (`./.`), so poorly covered samples are not counted as
+(default=10) are set to missing (`./.`), so low-coverage samples are not counted as
 wild type. Samples are merged with the reference, so a covered sample without the variant
-is `0/0` and a sample with no data is `./.`. This matters for allele-frequency estimates.
+is `0/0` and a sample with no data is `./.`. This is crucial for allele-frequency estimates.
 
 If Clair3 fails for a sample, it is retried twice, then skipped so the rest of the run
-can finish. Check the run log for skipped samples.
+can finish. Check the run's log file to identify skipped samples.
 
 `--ploidy 1` adds Clair3's haploid options. Nanopore runs accept ploidy 1 or 2 only.
 
@@ -204,10 +208,10 @@ cap those requests, so set them to what one machine or node can give:
 --max_cpus 48 --max_memory 108.GB    # large HPC node
 ```
 
-A step that runs out of memory is retried up to twice with double and then triple
+Steps that run out of memory are retried a maximum of two times, first with double and then triple
 memory, up to `--max_memory`. MultiQC and the cohort-wide notebooks (sample QC, SNP
 tables, population structure, genetic diversity, allele frequencies) need more memory as
-the number of samples grows. Large cohorts (several hundred samples) may need 48 GB or
+the number of samples grows. Large cohorts (300+ samples) may need 48 GB or
 more.
 
 To submit jobs through a scheduler instead of running on one machine, add a small config
@@ -262,19 +266,19 @@ CONTAINER_REGISTRY=myname ./build.sh
 nextflow run . --container_registry myname [parameters]
 ```
 
-## Troubleshooting
+## Troubleshooting common errors
 
-- **"Cannot connect to the Docker daemon"**: start Docker and wait until it is ready.
-- **A step is killed (exit 137, or exit 138 for notebooks)**: it ran out of memory. Raise
+- "Cannot connect to the Docker daemon": start Docker engine
+- A step is killed (exit 137, or exit 138 for notebooks): Low memory. Raise
   `--max_memory`, or turn off the step (e.g. `--qc_multiqc false`) for very large cohorts.
-- **`FileNotFoundError ... pileup.pt`**: the Clair3 model is a TensorFlow model. See
+- `FileNotFoundError ... pileup.pt`: the Clair3 model is a TensorFlow model. See
   [Clair3 models](#nanopore-clair3-models).
-- **"Not all provided cohort columns are present in the metadata file"**: the metadata
-  (or `SampleSheet.csv` for `--from_bcl`) lacks a column named in `--cohort_columns`.
-- **A sample is missing from the analyses**: check `config/metadata.qcpass.tsv`. Samples
+- "Not all provided cohort columns are present in the metadata file": check the metadata file,
+  (or `SampleSheet.csv` for `--from_bcl`) which likely lacks a column named in `--cohort_columns`.
+- A sample is missing from the analyses: check `config/metadata.qcpass.tsv`. Samples
   below `--qc_sample_min_mean_target_coverage`, and samples whose Clair3 run was skipped,
   are left out.
-- **bcl2fastq: "Too many open files"**: Docker runs already get a higher open-file limit.
-  With other engines, raise `ulimit -n` on the host.
+- bcl2fastq: "Too many open files": Docker runs get a higher open-file limit.
+  With a Singularity engines, raise `ulimit -n` on the host.
 - Each run writes a timeline, a resource report and a trace to `<outdir>/pipeline_info/`.
   The trace shows the exit code, memory and run time of every step.
