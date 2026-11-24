@@ -1,0 +1,22 @@
+Changes in component 'nf-core/bwa/mem'
+'modules/nf-core/bwa/mem/environment.yml' is unchanged
+'modules/nf-core/bwa/mem/meta.yml' is unchanged
+Changes in 'bwa/mem/main.nf':
+--- modules/nf-core/bwa/mem/main.nf
++++ modules/nf-core/bwa/mem/main.nf
+@@ -47,7 +47,9 @@
+         pipe_command = "| samtools $samtools_command $args2 ${reference} --threads $task.cpus -o ${prefix}.${extension} -"
+     }
+     """
+-    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
++    # local patch: was `find -L ./ -name "*.amb"`, which silently returns nothing on some
++    # network file systems; a shell glob finds the same index there.
++    INDEX=`ls -1 ./*.amb ./*/*.amb 2>/dev/null | head -n 1 | sed 's/\\.amb\$//'`
+ 
+     bwa mem \\
+         $args \\
+
+'modules/nf-core/bwa/mem/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/bwa/mem/tests/nextflow_sam.config' is unchanged
+'modules/nf-core/bwa/mem/tests/main.nf.test' is unchanged
+************************************************************

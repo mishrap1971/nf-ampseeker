@@ -1,0 +1,93 @@
+{
+  "name": "AmpSeeker",
+  "homePage": "https://github.com/sanjaynagi/AmpSeeker",
+  "repos": {
+    "https://github.com/nf-core/modules.git": {
+      "modules": {
+        "nf-core": {
+          "bcftools/merge": {
+            "branch": "master",
+            "git_sha": "feef37435aea56816adf4b3bde1fc76aac327a8d",
+            "installed_by": ["modules"]
+          },
+          "bcftools/stats": {
+            "branch": "master",
+            "git_sha": "feef37435aea56816adf4b3bde1fc76aac327a8d",
+            "installed_by": ["modules"]
+          },
+          "bwa/index": {
+            "branch": "master",
+            "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+            "installed_by": ["modules"]
+          },
+          "bwa/mem": {
+            "branch": "master",
+            "git_sha": "2fb127c8fd13de0adaa676df7169131e45c0b114",
+            "installed_by": ["modules"],
+            "patch": "modules/nf-core/bwa/mem/bwa-mem.diff"
+          },
+          "clair3": {
+            "branch": "master",
+            "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+            "installed_by": ["modules"]
+          },
+          "fastp": {
+            "branch": "master",
+            "git_sha": "826a9b28d6da61097d60e1923bb8a2e51de3c5b4",
+            "installed_by": ["modules"]
+          },
+          "fastplong": {
+            "branch": "master",
+            "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+            "installed_by": ["modules"]
+          },
+          "fastqc": {
+            "branch": "master",
+            "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+            "installed_by": ["modules"]
+          },
+          "htslib/bgziptabix": {
+            "branch": "master",
+            "git_sha": "37f69c8ca3eb3d038a5d44f33a329e49f44bd4f2",
+            "installed_by": ["modules"]
+          },
+          "minimap2/align": {
+            "branch": "master",
+            "git_sha": "135d883a43b1a2324b4112cd270cf22e20835533",
+            "installed_by": ["modules"]
+          },
+          "minimap2/index": {
+            "branch": "master",
+            "git_sha": "135d883a43b1a2324b4112cd270cf22e20835533",
+            "installed_by": ["modules"]
+          },
+          "mosdepth": {
+            "branch": "master",
+            "git_sha": "999b9db1d6b8bdc591e1168e183f4cc87d6606f9",
+            "installed_by": ["modules"]
+          },
+          "multiqc": {
+            "branch": "master",
+            "git_sha": "98403d15b0e50edae1f3fec5eae5e24982f1fade",
+            "installed_by": ["modules"]
+          },
+          "samtools/faidx": {
+            "branch": "master",
+            "git_sha": "9339809fcb90af8a8b7051e6cd914894d5c52002",
+            "installed_by": ["modules"]
+          },
+          "samtools/flagstat": {
+            "branch": "master",
+            "git_sha": "9339809fcb90af8a8b7051e6cd914894d5c52002",
+            "installed_by": ["modules"]
+          },
+          "samtools/index": {
+            "branch": "master",
+            "git_sha": "9339809fcb90af8a8b7051e6cd914894d5c52002",
+            "installed_by": ["modules"]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+# run with:  nextflow run . -profile docker -params-file params.example.yaml
+
+dataset: natcomms
+platform: illumina
+ploidy: 2
+min_genotype_depth: 10   # nanopore only: Clair3 genotypes below this depth become missing (./.)
+panel: ag-vampir
+
+cohort_columns:
+  - location
+  - taxon
+  - country
+
+targets: config/ag-vampir.bed
+
+# --- input -----------------------------------------------------------------
+# from_bcl: true  -> demultiplex from illumina_dir, metadata read from SampleSheet.csv
+# from_bcl: false -> metadata TSV required
+from_bcl: true
+metadata: ""
+illumina_dir:
+  - resources/250110_M05658_0028_000000000-LTBV4
+  - resources/14_02_2024_MiSeq_output
+
+# --- reference -------------------------------------------------------------
+reference_name: AgamP4
+reference_fasta: resources/reference/AgamP4.fa
+reference_gff3: resources/reference/AgamP4.gff
+reference_snpeffdb: Anopheles_gambiae
+custom_snpeffdb: false
+
+# --- quality control -------------------------------------------------------
+qc_fastp: true
+qc_coverage: true
+qc_stats: true
+qc_multiqc: true
+qc_sample_min_mean_target_coverage: 5
+
+# --- analysis --------------------------------------------------------------
+analysis_sample_map: false          # needs lat/long columns in metadata
+analysis_population_structure: true
+analysis_genetic_diversity: true
+analysis_allele_frequencies: true
+
+# --- reporting -------------------------------------------------------------
+build_jupyter_book: true
+
+# --- resource caps -----------------------------------------------------------
+# Specify per-process resource labels (in conf/base.config) to your machine/HPC/cloud limits.
+# Defaults (shown below) suit a small HPC cluster node 
+# If running locally on your computer, lower them much further, e.g., --max_cpus 6 --max_memory 8.GB
+max_cpus: 16
+max_memory: '128.GB'
+max_time: '240.h'
+
+outdir: results

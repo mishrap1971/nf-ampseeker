@@ -1,0 +1,13 @@
+#tells nf-core/tools what kind of repo this is.
+repository_type: pipeline
+
+# AmpSeeker module linting
+lint:
+  files_exist: false
+  files_unchanged: false
+  nextflow_config: false
+  readme: false
+  pipeline_todos: false
+  actions_ci: false
+  actions_nf_test: false
+  multiqc_config: false

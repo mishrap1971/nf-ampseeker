@@ -1,0 +1,12 @@
+work/
+.nextflow/
+.nextflow.log*
+results*/
+data/
+metadata/
+docs/ampseeker-results/
+__pycache__/
+.DS_Store
+
+# nf-core module bookkeeping files (not used by this pipeline)
+conf/containers_*.config
