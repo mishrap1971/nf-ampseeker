@@ -14,9 +14,9 @@ This is a Nextflow DSL2 version of
 | Trim reads | fastp | fastplong |
 | Map | bwa mem | minimap2 |
 | Call variants at target SNPs | bcftools mpileup/call | bcftools mpileup/call |
-| Call variants across amplicons | bcftools mpileup/call | Clair3 (gVCF, low-depth genotypes set to missing) |
+| Call variants across amplicons | bcftools mpileup/call | Clair3 |
 | Merge samples, annotate | bcftools merge, snpEff | bcftools merge, snpEff |
-| QC | mosdepth, samtools flagstat, bcftools stats, MultiQC, QC notebooks | same (no mosdepth) |
+| QC | mosdepth, samtools flagstat, bcftools stats, MultiQC, QC notebooks | same (except mosdepth) |
 | Analysis | population structure, genetic diversity, allele frequencies, SNP tables | same |
 | Report | jupyter-book HTML | jupyter-book HTML |
 
@@ -27,7 +27,7 @@ The `ag-vampir` panel also runs the *An. gambiae* species-ID and kdr notebooks.
 You need Java v17 or later, [Nextflow](https://www.nextflow.io/) 24.04+ and Docker or
 Singularity/Apptainer. You do not need to install any bioinformatics tool that is used in the workflow, they run in a container that is pulled by the pipeline.
 
-**1. Java 17 or newer.** Check with `java -version`. To install it:
+**1. Java 17 or later** Check with `java -version`. To install it:
 
 ```bash
 curl -s https://get.sdkman.io | bash
@@ -37,7 +37,7 @@ curl -s https://get.sdkman.io | bash
 sdk install java 17.0.10-tem
 ```
 
-**2. Nextflow.**
+**2. Nextflow**
 
 ```bash
 curl -s https://get.nextflow.io | bash
@@ -50,14 +50,14 @@ chmod +x nextflow && mkdir -p ~/bin && mv nextflow ~/bin/
 Make sure `~/bin` is on your `PATH`, then check with `nextflow -version`.
 `conda install -c bioconda nextflow` works too.
 
-**3. A container engine.**
+**3. Container engine**
 
 - Laptop or PC: [Docker](https://docs.docker.com/get-docker/). On a Mac, give
   Docker Desktop at least 8 GB of memory (Settings → Resources). Check that Docker is running
   with `docker info`.
 - HPC: Check with your server admin. Most HPCs use Singularity/Apptainer, usually already installed (`module load singularity`, or `apptainer --version`). Use `-profile singularity` instead of `-profile docker` in every command. In case your HPC has Docker configured, stick with `-profile docker`
 
-**4. AmpSeeker pipeline.** 
+**4. AmpSeeker pipeline** 
 
 Fetch the pipeline through Nextflow:
 ```bash
@@ -70,7 +70,7 @@ If you want to customise the config settings, clone it from github:
 git clone https://github.com/mishrap1971/nf-ampseeker.git
 ```
 
-**5. Check the install.** This is a dry run of the whole workflow with placeholder steps (needs no
+**5. Check the install** This is a dry run of the whole workflow with placeholder steps (needs no
 data):
 
 ```bash
