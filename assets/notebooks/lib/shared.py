@@ -236,16 +236,33 @@ def pca(geno, metadata, n_components = 3, query=None, missing_threshold=0.05):
     loc_var = np.any(gn_alt != gn_alt[:, 0, np.newaxis], axis=1)
     gn_var = np.compress(loc_var, gn_alt, axis=0)
     
-    coords, model = allel.pca(gn_var, n_components=n_components)
+    # PCA gives at most min(variable sites, samples) components. With few QC-passing
+    # samples or few variable sites, compute what is possible and fill the rest with 0
+    # so the PC1-PC3 plots still work.
+    n_requested = n_components
+    n_components = min(n_components, gn_var.shape[0], gn_var.shape[1])
+    if n_components < 1:
+        raise ValueError(
+            f"PCA needs at least one variable site and one sample; got {gn_var.shape[0]} "
+            f"variable sites and {gn_var.shape[1]} samples after filtering."
+        )
+    if n_components < n_requested:
+        print(f"PCA: only {n_components} of {n_requested} components possible "
+              f"({gn_var.shape[0]} variable sites, {gn_var.shape[1]} samples); the rest are set to 0.")
 
-    # flip axes back so PC1 is same orientation in each window 
+    coords, model = allel.pca(gn_var, n_components=n_components)
+    n_components = min(n_components, coords.shape[1])
+    if coords.shape[1] < n_requested:
+        coords = np.hstack([coords, np.zeros((coords.shape[0], n_requested - coords.shape[1]))])
+
+    # flip axes back so PC1 is same orientation in each window
     for i in range(n_components):
         c = coords[:, i]
     if np.abs(c.min()) > np.abs(c.max()):
         coords[:, i] = c * -1
     
     pca_df = pd.DataFrame(coords)
-    pca_df.columns = [f"PC{pc+1}" for pc in range(n_components)]
+    pca_df.columns = [f"PC{pc+1}" for pc in range(coords.shape[1])]
     pca_df = pd.concat([metadata.reset_index(drop=True), pca_df], axis=1)
     
     return pca_df, model

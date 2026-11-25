@@ -16,7 +16,7 @@ This is a Nextflow DSL2 version of
 | Call variants at target SNPs | bcftools mpileup/call | bcftools mpileup/call |
 | Call variants across amplicons | bcftools mpileup/call | Clair3 |
 | Merge samples, annotate | bcftools merge, snpEff | bcftools merge, snpEff |
-| QC | mosdepth, samtools flagstat, bcftools stats, MultiQC, QC notebooks | same (except mosdepth) |
+| QC | mosdepth, samtools flagstat, bcftools stats, MultiQC, QC notebooks | same |
 | Analysis | population structure, genetic diversity, allele frequencies, SNP tables | same |
 | Report | jupyter-book HTML | jupyter-book HTML |
 

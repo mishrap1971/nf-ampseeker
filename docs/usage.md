@@ -176,7 +176,7 @@ Defaults are in [`nextflow.config`](../nextflow.config).
 | Parameter | Default | Description |
 |---|---|---|
 | `--qc_fastp` | `true` | Include fastp/fastplong reports in MultiQC. |
-| `--qc_coverage` | `true` | Illumina: mosdepth coverage and the coverage notebook. |
+| `--qc_coverage` | `true` | mosdepth coverage and the coverage notebook. |
 | `--qc_stats` | `true` | samtools flagstat and bcftools stats. |
 | `--qc_multiqc` | `true` | MultiQC report. |
 | `--qc_sample_min_mean_target_coverage` | `5` | Minimum mean target coverage for a sample to pass QC. |

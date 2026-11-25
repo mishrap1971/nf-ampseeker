@@ -27,7 +27,7 @@ every position across the amplified regions.
 | `trimmed-reads/` | Trimmed FASTQs from fastp (Illumina) or fastplong (nanopore). |
 | `alignments/<sample>.bam`, `.bam.bai` | Sorted, indexed alignments. |
 | `alignments/bamStats/` | `samtools flagstat` per sample. |
-| `coverage/` | Illumina: mosdepth coverage per sample, plus `amplicon_by_sample_depth.xlsx` (depth per amplicon and sample). |
+| `coverage/` | mosdepth coverage per sample, plus `amplicon_by_sample_depth.xlsx` (depth per amplicon and sample). |
 
 ## Variants
 
