@@ -3,8 +3,8 @@
 AmpSeeker analyses amplicon sequencing data from Illumina or Oxford Nanopore. It maps
 reads to a reference, calls and annotates variants, runs sample QC, and performs population genetics analysis. All these steps are summarised an HTML report that includes coverage, population structure, genetic diversity and allele-frequency results.
 
-This is a Nextflow DSL2 version of
-[AmpSeeker](https://github.com/sanjaynagi/AmpSeeker). It uses the same inputs, analysis notebooks and output layout. The workflow can be run in a Docker or Singularity container.
+This is a Nextflow version of
+[AmpSeeker](https://github.com/sanjaynagi/AmpSeeker). The workflow can be run in a Docker or Singularity container.
 
 ## What it does
 
