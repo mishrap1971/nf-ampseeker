@@ -99,7 +99,8 @@ More on the containers: [Containers](docs/usage.md#containers).
 Nanopore:
 
 ```bash
-nextflow run mishrap1971/nf-ampseeker -r main -profile docker \
+nextflow run mishrap1971/nf-ampseeker -profile docker \
+  --container_registry ghcr.io/mishrap1971 \
   --dataset mydata \
   --platform nanopore \
   --metadata metadata.tsv \
@@ -108,23 +109,29 @@ nextflow run mishrap1971/nf-ampseeker -r main -profile docker \
   --reference_gff3 ref.gff \
   --custom_snpeffdb true \
   --clair3_model_path clair3_models/r1041_e82_400bps_sup_v420 \
-  --outdir results
+  --outdir results \
+  --max_cpus 6 \
+  --max_memory 64.GB \
 ```
 
 Illumina, from FASTQ:
 
 ```bash
-nextflow run mishrap1971/nf-ampseeker -r main -profile docker \
+nextflow run mishrap1971/nf-ampseeker -profile docker \
+  --container_registry ghcr.io/mishrap1971 \
   --dataset mydata \
   --platform illumina \
   --metadata metadata.tsv \
   --targets targets.bed \
   --reference_fasta ref.fasta \
+  --reference_gff3 ref.gff \
   --reference_snpeffdb Anopheles_gambiae \
-  --outdir results
+  --outdir results \
+  --max_cpus 6 \
+  --max_memory 64.GB \
 ```
 
-If running on a laptop, add limits that fit the machine's CPU limits, e.g., `--max_cpus 6 --max_memory 8.GB`.
+If running on a laptop, the CPU/memory flags should reflect the machine's CPU limits, e.g., `--max_cpus 6 --max_memory 8.GB`.
 Open `results/ampseeker-results/_build/html/index.html` when the run finishes.
 
 `metadata.tsv` is tab-separated, with one row per sample:
